@@ -1,11 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {useReducedMotion} from 'motion/react';
 import {ArrowDown} from 'lucide-react';
+import {FRAME_COUNT} from './frameCount';
 
-const LAST_FRAME = 240;
+const LAST_FRAME = FRAME_COUNT;
 const FRAMES_PER_SHEET = 12;
-const SHEET_COUNT = LAST_FRAME / FRAMES_PER_SHEET;
-const WALKTHROUGH_END = .82;
+const SHEET_COUNT = Math.ceil(LAST_FRAME / FRAMES_PER_SHEET);
+const WALKTHROUGH_END = .88;
 const sheetUrl = (index, compact) => `/${compact ? 'sprite-mobile' : 'sprite'}/sheet-${String(index + 1).padStart(2, '0')}.webp`;
 const frameUrl = (number, compact) => compact
   ? `/sequence-mobile/frame-${String(number).padStart(3, '0')}.webp`
@@ -46,7 +47,8 @@ export default function Hero({onComplete}) {
       }
     };
     const loadSheet = index => {
-      if (index < 0 || index >= SHEET_COUNT || sheets.has(index) || sheetPending.has(index) || sheetFailed.has(index) || sheetInFlight >= 3) return;
+      const focus = Math.floor((target - 1) / FRAMES_PER_SHEET);
+      if (index < 0 || index >= SHEET_COUNT || sheets.has(index) || sheetPending.has(index) || sheetFailed.has(index) || sheetInFlight >= (index === focus ? 4 : 2)) return;
       sheetPending.add(index); sheetInFlight++;
       const image = new Image();
       image.decoding = 'async';
@@ -63,7 +65,7 @@ export default function Hero({onComplete}) {
       };
       image.onerror = () => {
         sheetFailed.add(index); sheetPending.delete(index); sheetInFlight--;
-        if (index === 0) setStatus('Walkthrough unavailable. Use Menu to continue.');
+        if (index === Math.floor((target - 1) / FRAMES_PER_SHEET) && !detail.has(target)) setStatus('Walkthrough unavailable. Use Menu to continue.');
         queueSheets();
       };
       image.src = sheetUrl(index, compact);
@@ -84,7 +86,7 @@ export default function Hero({onComplete}) {
       }
     };
     const loadDetail = number => {
-      if (number < 1 || number > LAST_FRAME || detail.has(number) || detailPending.has(number) || detailFailed.has(number) || detailInFlight >= 3) return;
+      if (number < 1 || number > LAST_FRAME || detail.has(number) || detailPending.has(number) || detailFailed.has(number) || detailInFlight >= (number === target ? 4 : 2)) return;
       detailPending.add(number); detailInFlight++;
       const image = new Image();
       image.decoding = 'async';
@@ -95,7 +97,7 @@ export default function Hero({onComplete}) {
           if (!alive) { bitmap.close(); return; }
           detail.set(number, bitmap);
           trimDetail();
-          if (reduced) setStatus('');
+          if (number === target || reduced) setStatus('');
           schedule();
         } catch {
           detailFailed.add(number);
@@ -117,7 +119,7 @@ export default function Hero({onComplete}) {
       if (!alive || document.hidden || !active) return;
       if (reduced) { loadDetail(LAST_FRAME); return; }
       loadDetail(target);
-      for (let step = 1; step <= 12 && detailInFlight < 3; step++) {
+      for (let step = 1; step <= (compact ? 8 : 12) && detailInFlight < 2; step++) {
         loadDetail(target + direction * step);
         if (step <= 3) loadDetail(target - direction * step);
       }
@@ -189,7 +191,7 @@ export default function Hero({onComplete}) {
 
   return <section id="home" className="hero-track" ref={root}>
     <div className={`hero ${complete ? 'journey-complete' : 'journey-active'}`}>
-      <canvas ref={canvas} aria-label="Scroll-controlled café walkthrough using the 240 original supplied frames"/>
+      <canvas ref={canvas} aria-label={`Scroll-controlled café walkthrough using the ${FRAME_COUNT} original supplied frames`}/>
       <div className="hero-shade"/>
       <div className="hero-copy" aria-hidden={!complete} inert={!complete}>
         <span className="eyebrow">BANDRA WEST · MUMBAI</span>

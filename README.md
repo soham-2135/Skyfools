@@ -9,7 +9,7 @@ Independent café concept, researched against The Lovefools in Bandra. React 19,
 ## Content
 
 - Edit `src/data.js` for the 15 researched menu names, public listing prices, source links and review summaries.
-- All 240 original JPEG frames from the latest supplied archive are retained unchanged in `public/frames`, numbered 001–240.
+- All 300 original JPEG frames from the latest supplied archive are retained unchanged in `public/frames`, numbered 001–300.
 - The canvas follows scroll position directly, draws the nearest loaded frame, preloads adjacent frames, and keeps a bounded decoded-image cache. It uses contain scaling to preserve the complete 16:9 frame, including letterboxing on portrait screens.
 - Reduced motion disables automatic carousel/review motion and uses a still hero.
 - Native dialog provides focus trapping, Escape dismissal and restored focus; backdrop clicks also close it.
@@ -22,5 +22,5 @@ Independent café concept, researched against The Lovefools in Bandra. React 19,
 Production build passed. Browser checks covered scroll frame movement, desktop layout, menu filtering, product modal opening, Escape dismissal, gallery lightbox and a 390px-wide responsive layout. Map and outgoing third-party destinations remain dependent on external services.
 
 ## Revised experience
-The hero uses a 900svh desktop / 750svh mobile scroll journey, revealing the left-aligned name only after frame 240. The last 18% holds the final frame. Canvas playback renders at device-pixel resolution (capped at 2.5× on mobile), uses the sharp frame whenever available, and falls back to a nearby sprite sheet during a fast seek. Mobile sharp frames are 1440×810 WebP copies of the supplied original JPGs; mobile sprite tiles are 480×270. Only nearby sheets load, and decoded mobile caches are bounded to 7 sheets and 12 sharp frames for memory control. Desktop sharp frames use the original 1920×1080 JPGs. Run `python scripts/import-walkthrough.py path/to/frames.zip`, then `python scripts/optimize-frames.py --mobile`, `python scripts/build-sprites.py`, and `python scripts/build-sprites.py --mobile` to regenerate the hero assets. Fifteen distinct sourced review summaries move in an accessible, pausable horizontal carousel.
+The hero uses a 1100svh desktop / 950svh mobile scroll journey, revealing the left-aligned name only after frame 300. The last 12% holds the final frame. Canvas playback renders at device-pixel resolution (capped at 2.5× on mobile), uses the sharp frame whenever available, and falls back to a nearby sprite sheet during a fast seek. Mobile sharp frames are 1440×810 WebP copies of the supplied original JPGs; mobile sprite tiles are 480×270. Only nearby sheets load, and decoded mobile caches are bounded to 7 sheets and 12 sharp frames for memory control. Desktop sharp frames use the original 1920×1080 JPGs. Run `python scripts/import-walkthrough.py path/to/frames.zip`, then `python scripts/optimize-frames.py --mobile`, `python scripts/build-sprites.py`, and `python scripts/build-sprites.py --mobile` to regenerate the hero assets. Fifteen distinct sourced review summaries move in an accessible, pausable horizontal carousel.
 

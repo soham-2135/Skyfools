@@ -54,3 +54,6 @@
 .item-detail-bottom strong{font-family:'Playfair Display',Georgia,serif;font-size:25px;color:#303126}
 @media(max-width:1000px){.section{padding-top:60px;padding-bottom:60px}.story-visual>img{height:430px}.review-words{font-size:19px}}
 @media(max-width:700px){.section{padding:46px 5%}.section-title{display:block;margin-bottom:24px;padding-bottom:20px}.section h2,.reviews h2,.story-copy h2,.visit h2{font-size:43px;letter-spacing:-1.7px}.section-intro{margin-top:17px;font-size:15px}.menu-card h3{font-size:26px}.menu-card p{font-size:14px}.story{gap:28px}.story-visual{margin-right:0}.story-visual>img{height:315px;border-radius:8px}.story-copy h2{margin:11px 0 20px}.gallery-grid{gap:10px}.review-card{min-height:275px}.review-words{font-size:22px}.review-detail-art{min-height:155px;font-size:150px}.review-detail .modal-copy p:not(.fine){font-size:21px}.food-detail-copy h2{font-size:33px;margin-bottom:20px}.food-detail-copy p{font-size:15px}.visit{gap:32px}.visit-info p{font-size:14px}.visit-actions{gap:14px 22px}.map-wrap{height:340px}}
+.hero-track{height:1100svh}
+@media(max-width:700px){.hero-track{height:950svh}}
+@media(prefers-reduced-motion:reduce){.hero-track{height:100svh}}
